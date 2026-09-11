@@ -1,0 +1,836 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>امتحان مادة قواعد البيانات - النموذج المتقدم</title>
+    <!-- مكتبة لإنشاء مؤثرات الفرح والألعاب النارية عند العلامة الكاملة -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <style>
+         :root {
+            --bg-color: #021526;
+            --card-bg: rgba(4, 30, 51, 0.9);
+            --neon-blue-bright: #00f3ff;
+            --neon-blue-light: #70ffff;
+            --neon-emerald: #0ea5e9;
+            --neon-cyan-acc: #38bdf8;
+            --text-main: #f0f9ff;
+            --text-muted: #bae6fd;
+            --border-glass: rgba(56, 189, 248, 0.2);
+            --border-glow: rgba(0, 243, 255, 0.4);
+        }
+        
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+        
+        body {
+            background-color: var(--bg-color);
+            background-image: radial-gradient(circle at 10% 20%, rgba(0, 243, 255, 0.08) 0%, transparent 40%), radial-gradient(circle at 90% 80%, rgba(14, 165, 233, 0.08) 0%, transparent 40%);
+            color: var(--text-main);
+            min-height: 100vh;
+            padding: 12px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 650px;
+            background: var(--card-bg);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--border-glass);
+            border-radius: 22px;
+            box-shadow: 0 10px 35px rgba(0, 0, 0, 0.6), 0 0 30px rgba(0, 243, 255, 0.15);
+            padding: 20px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        #welcome-screen {
+            text-align: center;
+            padding: 25px 5px;
+        }
+        
+        .welcome-badge-box {
+            background: rgba(2, 22, 38, 0.9);
+            border: 1px solid var(--border-glow);
+            border-radius: 16px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        
+        #welcome-screen h1 {
+            font-size: 19px;
+            color: var(--neon-blue-bright);
+            margin-bottom: 8px;
+        }
+        
+        #welcome-screen h2 {
+            font-size: 14px;
+            color: var(--text-main);
+        }
+        
+        #welcome-screen p {
+            color: var(--text-muted);
+            font-size: 13px;
+            margin-bottom: 20px;
+            line-height: 1.6;
+        }
+        
+        .input-group {
+            margin-bottom: 20px;
+            text-align: right;
+        }
+        
+        .input-group label {
+            display: block;
+            font-size: 12px;
+            color: var(--neon-blue-bright);
+            margin-bottom: 8px;
+            font-weight: 700;
+        }
+        
+        .input-group input {
+            width: 100%;
+            padding: 12px 15px;
+            background: rgba(2, 22, 38, 0.8);
+            border: 1px solid var(--border-glow);
+            border-radius: 10px;
+            color: var(--text-main);
+            font-size: 14px;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+        
+        .input-group input:focus {
+            border-color: var(--neon-blue-bright);
+            box-shadow: 0 0 10px rgba(0, 243, 255, 0.3);
+        }
+        
+        .btn-main {
+            background: linear-gradient(135deg, var(--neon-blue-bright), var(--neon-emerald));
+            color: #021526;
+            font-weight: 800;
+            font-size: 15px;
+            padding: 15px 25px;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            box-shadow: 0 0 20px rgba(0, 243, 255, 0.35);
+            width: 100%;
+        }
+        
+        #quiz-section {
+            display: none;
+        }
+        
+        .header-info-box {
+            display: flex;
+            justify-content: space-around;
+            background: rgba(2, 22, 38, 0.7);
+            border: 1px solid var(--border-glass);
+            border-radius: 12px;
+            padding: 8px;
+            margin-bottom: 12px;
+            gap: 8px;
+        }
+        
+        .info-pill {
+            font-size: 11px;
+            color: var(--neon-blue-light);
+            background: rgba(0, 243, 255, 0.08);
+            border: 1px solid rgba(0, 243, 255, 0.25);
+            padding: 5px 10px;
+            border-radius: 8px;
+            flex: 1;
+            text-align: center;
+            font-weight: 700;
+        }
+        
+        header {
+            text-align: center;
+            margin-bottom: 15px;
+        }
+        
+        header h1 {
+            font-size: 16px;
+            color: var(--text-main);
+            margin-bottom: 3px;
+        }
+        
+        header p {
+            color: var(--text-muted);
+            font-size: 11px;
+        }
+        
+        .progress-bar-container {
+            width: 100%;
+            background: rgba(3, 37, 61, 0.7);
+            height: 6px;
+            border-radius: 3px;
+            margin-bottom: 18px;
+            overflow: hidden;
+        }
+        
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, var(--neon-blue-bright), var(--neon-emerald));
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+        
+        .question-card {
+            background: rgba(2, 22, 38, 0.6);
+            border: 1px solid var(--border-glass);
+            border-radius: 14px;
+            padding: 16px;
+            margin-bottom: 14px;
+        }
+        
+        .q-title {
+            font-size: 13px;
+            font-weight: 700;
+            margin-bottom: 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            line-height: 1.4;
+            gap: 10px;
+        }
+        
+        .q-weight {
+            font-size: 9px;
+            background: rgba(14, 165, 233, 0.15);
+            color: var(--neon-blue-light);
+            border: 1px solid var(--neon-emerald);
+            padding: 2px 8px;
+            border-radius: 10px;
+            white-space: nowrap;
+        }
+        
+        .options-list {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        
+        .option-label {
+            display: flex;
+            align-items: center;
+            background: rgba(3, 37, 61, 0.7);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            padding: 10px 12px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 12px;
+            line-height: 1.3;
+        }
+        
+        .option-label input[type="radio"] {
+            margin-left: 10px;
+            margin-right: 0;
+            cursor: pointer;
+            accent-color: var(--neon-blue-bright);
+            width: 16px;
+            height: 16px;
+            flex-shrink: 0;
+        }
+        
+        .code-option {
+            direction: ltr;
+            text-align: left;
+            unicode-bidi: embed;
+            font-family: monospace;
+            color: var(--neon-cyan-acc);
+            font-size: 12.5px;
+            width: 100%;
+        }
+        
+        .correct-ans {
+            border-color: var(--neon-blue-bright) !important;
+            background: rgba(0, 243, 255, 0.2) !important;
+            color: var(--neon-blue-bright);
+        }
+        
+        .wrong-ans {
+            border-color: #ff3366 !important;
+            background: rgba(255, 51, 102, 0.15) !important;
+            color: #ff3366;
+        }
+        
+        #result-box {
+            display: none;
+            text-align: center;
+            padding: 20px;
+            background: rgba(2, 22, 38, 0.95);
+            border-radius: 18px;
+            border: 2px solid var(--neon-blue-bright);
+            margin-top: 15px;
+        }
+        
+        #result-box h2 {
+            color: var(--neon-blue-bright);
+            font-size: 18px;
+            margin-bottom: 8px;
+        }
+        
+        .student-name-display {
+            font-size: 14px;
+            color: var(--neon-blue-light);
+            margin-bottom: 10px;
+            font-weight: bold;
+            background: rgba(14, 165, 233, 0.1);
+            border: 1px solid rgba(14, 165, 233, 0.3);
+            padding: 6px;
+            border-radius: 8px;
+        }
+        
+        .badge-tag {
+            display: inline-block;
+            background: rgba(0, 243, 255, 0.1);
+            border: 1px solid var(--neon-blue-bright);
+            color: var(--neon-blue-bright);
+            padding: 5px 14px;
+            border-radius: 15px;
+            font-size: 11px;
+            margin-bottom: 14px;
+            font-weight: 700;
+        }
+        
+        .result-stats-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+        
+        .result-stat-card {
+            background: rgba(3, 37, 61, 0.8);
+            border: 1px solid var(--border-glass);
+            border-radius: 12px;
+            padding: 10px;
+            text-align: center;
+        }
+        
+        .result-stat-card span {
+            display: block;
+            font-size: 10px;
+            color: var(--text-muted);
+            margin-bottom: 4px;
+        }
+        
+        .result-stat-card strong {
+            font-size: 16px;
+            color: var(--neon-blue-bright);
+        }
+        
+        .action-buttons-group {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-top: 15px;
+        }
+        
+        .btn-action-custom {
+            padding: 12px;
+            border-radius: 10px;
+            font-weight: 700;
+            font-size: 13px;
+            cursor: pointer;
+            border: 1px solid var(--border-glass);
+            width: 100%;
+        }
+        
+        .btn-exit {
+            background: rgba(255, 51, 102, 0.15);
+            color: #ff3366;
+            border-color: rgba(255, 51, 102, 0.4);
+        }
+        
+        .btn-restart {
+            background: rgba(0, 243, 255, 0.15);
+            color: var(--neon-blue-bright);
+            border-color: rgba(0, 243, 255, 0.4);
+        }
+        
+        .btn-retry-wrong {
+            background: rgba(14, 165, 233, 0.15);
+            color: var(--neon-blue-light);
+            border-color: rgba(14, 165, 233, 0.4);
+        }
+        
+        footer {
+            text-align: center;
+            margin-top: 18px;
+            padding-top: 10px;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            color: var(--text-muted);
+            font-size: 10px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+        <!-- شاشة الترحيب وإدخال الاسم -->
+        <div id="welcome-screen">
+            <div class="welcome-badge-box">
+                <h1>امتحان مادة قواعد البيانات المتخصص</h1>
+                <h2>شامل (SQL, ERD, Normalization, Relational Algebra, DDL, DML)</h2>
+            </div>
+            <div class="input-group">
+                <label for="studentNameInput">أدخلي اسم الطالبة الثلاثي:</label>
+                <input type="text" id="studentNameInput" placeholder="اكتبي اسمك هنا..." autocomplete="off">
+            </div>
+            <p>يتكون هذا الامتحان من 20 سؤالاً (كل سؤال بعلامتين، المجموع الكلي 40 علامة) ويغطي المفاهيم الأساسية والمتقدمة في نظم إدارة قواعد البيانات.</p>
+            <button type="button" class="btn-main" onclick="startQuiz()">ابدأ الاختبار الآن</button>
+        </div>
+
+        <!-- قسم حل الامتحان -->
+        <div id="quiz-section">
+            <header>
+                <div class="header-info-box">
+                    <div class="info-pill" id="displayStudentHeader">الطالبة: -</div>
+                    <div class="info-pill">قواعد البيانات (20 سؤالاً)</div>
+                </div>
+                <h1 id="section-title">امتحان مادة قواعد البيانات</h1>
+                <p id="section-subtitle">أجب عن جميع الأسئلة التالية بدقة</p>
+            </header>
+            <div class="progress-bar-container">
+                <div class="progress-bar" id="progressBar"></div>
+            </div>
+
+            <form id="quizForm" onsubmit="return false;">
+                <div id="questions-container"></div>
+                <button type="button" class="btn-main" id="submitBtn" onclick="processSubmissions()" style="margin-top: 12px;">اعتماد الإجابات وعرض النتيجة</button>
+            </form>
+
+            <!-- لوحة النتائج والأزرار -->
+            <div id="result-box">
+                <h2 id="result-box-title">لوحة النتائج الرقمية</h2>
+                <div class="student-name-display" id="resultStudentName">اسم الطالبة: -</div>
+                <div class="badge-tag" id="status-badge">تم التصحيح بنجاح</div>
+
+                <div class="result-stats-grid" id="stats-grid-container">
+                    <div class="result-stat-card">
+                        <span>النتيجة الأولى</span>
+                        <strong id="first-score-val">0 / 40</strong>
+                    </div>
+                    <div class="result-stat-card" id="second-score-card" style="display: none;">
+                        <span>العلامة بعد التدارك</span>
+                        <strong id="after-score-val" style="color: var(--neon-blue-bright);">0 / 40</strong>
+                    </div>
+                </div>
+
+                <p id="score-text" style="color: var(--text-muted); font-size: 12px; margin-bottom: 14px;"></p>
+
+                <div class="action-buttons-group">
+                    <button type="button" class="btn-action-custom btn-retry-wrong" id="btnRetryWrong" onclick="startWrongReview()" style="display: none;">إعادة الأخطاء وتداركها الآن</button>
+                    <button type="button" class="btn-action-custom btn-restart" onclick="location.reload()">إعادة الاختبار كلياً</button>
+                    <button type="button" class="btn-action-custom btn-exit" onclick="exitQuizSession()">خروج وحفظ النتيجة</button>
+                </div>
+            </div>
+        </div>
+
+        <footer>
+            إعداد المعلمة: نسرين قنديل
+        </footer>
+    </div>
+
+    <script>
+        let studentFullName = "";
+
+        const originalQuizData = [{
+            id: 1,
+            weight: 2,
+            question: "ما هو الغرض الأساسي من استخدام نموذج العلاقات الكيانية (ERD) في تصميم قواعد البيانات؟",
+            options: ["كتابة أكواد جافا سكريبت للواجهات.", "التمثيل المرئي للكيانات والخصائص والعلاقات بينها قبل مرحلة التنفيذ الفعلي.", "تسريع أداء معالج الحاسوب.", "ضغط حجم ملفات قواعد البيانات."],
+            correct: 1,
+            isCode: false
+        }, {
+            id: 2,
+            weight: 2,
+            question: "أي من أوامر لغة تعريف البيانات (DDL) التالية يُستخدم لحذف جدول بالكامل مع هيكله وقيوده من قاعدة البيانات؟",
+            options: ["DROP TABLE Employees;", "DELETE FROM Employees;", "REMOVE TABLE Employees;", "CLEAR TABLE Employees;"],
+            correct: 0,
+            isCode: true
+        }, {
+            id: 3,
+            weight: 2,
+            question: "ما هي لغة معالجة البيانات (DML) التي تُستخدم لإدخال سجلات أو صفوف جديدة داخل الجدول؟",
+            options: ["SELECT", "UPDATE", "INSERT INTO", "ALTER TABLE"],
+            correct: 2,
+            isCode: true
+        }, {
+            id: 4,
+            weight: 2,
+            question: "في نموذج العلاقة الكيانية (ERD)، ماذا يمثل الشكل \"المعين\" (Diamond)؟",
+            options: ["الكيان (Entity)", "الخاصية (Attribute)", "العلاقة (Relationship)", "المفتاح الأساسي (Primary Key)"],
+            correct: 2,
+            isCode: false
+        }, {
+            id: 5,
+            weight: 2,
+            question: "أي من قيود التكامل المرجعي (Integrity Constraints) يُستخدم لضمان عدم تكرار قيمة الحقل وأنها لا تقبل القيمة الفارغة (NULL)؟",
+            options: ["FOREIGN KEY", "PRIMARY KEY", "CHECK", "DEFAULT"],
+            correct: 1,
+            isCode: false
+        }, {
+            id: 6,
+            weight: 2,
+            question: "في الجبر العلائقي (Relational Algebra)، ما هي العملية التي تُستخدم لاختيار \"صفوف\" (Tuples) معينة تحقق شرطاً محدداً من جدول ما؟",
+            options: ["Selection (σ - Sigma)", "Projection (π - Pi)", "Cartesian Product (×)", "Join (⨈)"],
+            correct: 0,
+            isCode: false
+        }, {
+            id: 7,
+            weight: 2,
+            question: "ما هي الصيغة الصحيحة في لغة SQL لترتيب النتائج تصاعدياً بناءً على حقل الراتب (Salary)؟",
+            options: ["ORDER BY Salary DESC", "SORT BY Salary ASC", "ORDER BY Salary ASC", "GROUP BY Salary"],
+            correct: 2,
+            isCode: true
+        }, {
+            id: 8,
+            weight: 2,
+            question: "ما هو الهدف من عملية التسوية الأولى (First Normal Form - 1NF) في قواعد البيانات؟",
+            options: ["إزالة الاعتماديات الجزئية.", "التخلص من القيم المتعددة (Multivalued Attributes) وجعل كل خلية تحتوي على قيمة ذرية واحدة.", "إزالة الاعتماديات المتعدية.", "ربط الجداول ببعضها عبر المفاتيح الأجنبية."],
+            correct: 1,
+            isCode: false
+        }, {
+            id: 9,
+            weight: 2,
+            question: "أي من دوال التجميع (Aggregate Functions) في SQL تستخدم لحساب عدد الصفوف في جدول معين؟",
+            options: ["SUM()", "COUNT()", "AVG()", "TOTAL()"],
+            correct: 1,
+            isCode: true
+        }, {
+            id: 10,
+            weight: 2,
+            question: "ماذا تعني عملية الـ Projection ($\pi$) في الجبر العلائقي؟",
+            options: ["اختيار أعمدة معينة فقط من الجدول وإهمال الباقي.", "تصفية الصفوف بشرط معين.", "دمج جدولين بناءً على حقل مشترك.", "إيجاد الفرق بين جدولين."],
+            correct: 0,
+            isCode: false
+        }, {
+            id: 11,
+            weight: 2,
+            question: "أي من أوامر SQL التالية يُستخدم لتعديل هيكل الجدول بإضافة عمود جديد؟",
+            options: ["UPDATE TABLE", "ALTER TABLE ADD", "MODIFY TABLE", "CHANGE TABLE"],
+            correct: 1,
+            isCode: true
+        }, {
+            id: 12,
+            weight: 2,
+            question: "متى نصل بقاعدة البيانات إلى مستوى التسوية الثالثة (3NF)؟",
+            options: ["إذا كانت في 2NF وتخلصت من جميع الاعتماديات المتعدية (Transitive Dependencies).", "إذا كانت تحتوي على مفتاح مركب.", "إذا تم حذف جميع القيود.", "إذا كانت الجداول غير مترابطة."],
+            correct: 0,
+            isCode: false
+        }, {
+            id: 13,
+            weight: 2,
+            question: "ما هو الأمر المستخدم لتنفيذ استعلام دمج بين جدولين بناءً على تطابق مفتاح أجنبي مع مفتاح أساسي؟",
+            options: ["JOIN", "MERGE", "COMBINE", "UNION ALL"],
+            correct: 0,
+            isCode: true
+        }, {
+            id: 14,
+            weight: 2,
+            question: "أي من الكلمات المفتاحية في SQL تُستخدم لتجميع الصفوف ذات القيم المتشابهة لتطبيق دوال التجميع عليها؟",
+            options: ["ORDER BY", "HAVING", "GROUP BY", "WHERE"],
+            correct: 2,
+            isCode: true
+        }, {
+            id: 15,
+            weight: 2,
+            question: "ما هو المفتاح الأجنبي (Foreign Key)؟",
+            options: ["حقل فريد لا يقبل التكرار أبداً داخل نفس الجدول.", "حقل في جدول يشير إلى المفتاح الأساسي في جدول آخر لربطهما معاً.", "كلمة مرور لحماية قاعدة البيانات.", "رقم تسلسلي تلقائي."],
+            correct: 1,
+            isCode: false
+        }, {
+            id: 16,
+            weight: 2,
+            question: "ما هو الشرط الأساسي للانتقال من التسوية الأولى (1NF) إلى التسوية الثانية (2NF)؟",
+            options: ["أن تكون في 1NF وأن يتم إزالة أي اعتمادية جزئية (Partial Dependency).", "أن يتم حذف كافة الفهارس.", "أن يكون الجدول خالياً تماماً من البيانات.", "أن يتم تحويله إلى شكل رسومي."],
+            correct: 0,
+            isCode: false
+        }, {
+            id: 17,
+            weight: 2,
+            question: "أي من أوامر DML التالية يُستخدم لتحديث بيانات السجلات القائمة؟",
+            options: ["ALTER", "UPDATE", "INSERT", "REFRESH"],
+            correct: 1,
+            isCode: true
+        }, {
+            id: 18,
+            weight: 2,
+            question: "في نموذج ERD، ماذا يمثل خط الاتصال الواصل بين الكيان والخاصية؟",
+            options: ["علاقة رأس بأطراف", "ربط الخاصية بالكيان التابع لها", "مفتاح أساسي مركب", "حذف تلقائي"],
+            correct: 1,
+            isCode: false
+        }, {
+            id: 19,
+            weight: 2,
+            question: "ما هو الفرق الرئيسي بين شرط WHERE وشرط HAVING في جملة الاستعلام؟",
+            options: ["WHERE تُطبق على الصفوف قبل التجميع، بينما HAVING تُطبق على المجموعات بعد التجميع (Group By).", "لا يوجد فرق بينهما نهائياً.", "HAVING تستخدم فقط مع الحذف.", "WHERE تستخدم حصراً مع النصوص."],
+            correct: 0,
+            isCode: true
+        }, {
+            id: 20,
+            weight: 2,
+            question: "ما هو المفهوم الذي يعبر عن قدرة نظام قواعد البيانات على ضمان إتمام المعاملات كحزمة واحدة متكاملة أو إلغائها بالكامل (ACID properties)؟",
+            options: ["مبدأ معاملة البيانات (Transactions)", "إدارة الألوان والواجهات", "تشفير الملفات الصوتية", "جدولة المهام السحابية"],
+            correct: 0,
+            isCode: false
+        }];
+
+        let currentStage = 'main';
+        let activeData = [];
+        let initialScore = 0;
+        let finalScore = 0;
+        let wrongQuestionsList = [];
+
+        function triggerCelebration() {
+            if (typeof confetti === 'function') {
+                var duration = 3 * 1000;
+                var animationEnd = Date.now() + duration;
+                var defaults = {
+                    startVelocity: 30,
+                    spread: 360,
+                    ticks: 60,
+                    zIndex: 999
+                };
+
+                function randomInRange(min, max) {
+                    return Math.random() * (max - min) + min;
+                }
+
+                var interval = setInterval(function() {
+                    var timeLeft = animationEnd - Date.now();
+                    if (timeLeft <= 0) {
+                        return clearInterval(interval);
+                    }
+                    var particleCount = 50 * (timeLeft / duration);
+                    confetti(Object.assign({}, defaults, {
+                        particleCount,
+                        origin: {
+                            x: randomInRange(0.1, 0.3),
+                            y: Math.random() - 0.2
+                        }
+                    }));
+                    confetti(Object.assign({}, defaults, {
+                        particleCount,
+                        origin: {
+                            x: randomInRange(0.7, 0.9),
+                            y: Math.random() - 0.2
+                        }
+                    }));
+                }, 250);
+            }
+        }
+
+        function startQuiz() {
+            const nameInput = document.getElementById('studentNameInput').value.trim();
+            if (!nameInput) {
+                alert("الرجاء إدخال اسم الطالبة أولاً قبل البدء!");
+                document.getElementById('studentNameInput').focus();
+                return;
+            }
+
+            studentFullName = nameInput;
+            document.getElementById('displayStudentHeader').innerText = `الطالبة: ${studentFullName}`;
+            document.getElementById('resultStudentName').innerText = `اسم الطالبة: ${studentFullName}`;
+
+            document.getElementById('welcome-screen').style.display = 'none';
+            document.getElementById('quiz-section').style.display = 'block';
+            currentStage = 'main';
+            activeData = [...originalQuizData];
+            renderQuestions();
+            updateProgress();
+        }
+
+        function renderQuestions() {
+            const container = document.getElementById('questions-container');
+            container.innerHTML = '';
+
+            activeData.forEach((q, index) => {
+                let card = document.createElement('div');
+                card.className = 'question-card';
+                card.id = `q-card-${currentStage}-${index}`;
+
+                let optionsHtml = '';
+                q.options.forEach((opt, optIndex) => {
+                    const optionContentClass = q.isCode ? 'code-option' : '';
+
+                    optionsHtml += `
+                        <label class="option-label" id="label-${currentStage}-${index}-${optIndex}">
+                            <input type="radio" name="question_${currentStage}_${index}" value="${optIndex}" onchange="updateProgress()">
+                            <span class="${optionContentClass}">${opt}</span>
+                        </label>
+                    `;
+                });
+
+                card.innerHTML = `
+                    <div class="q-title">
+                        <span>السؤال ${index + 1}: ${q.question}</span>
+                        <span class="q-weight">${q.weight} علامات</span>
+                    </div>
+                    <div class="options-list">
+                        ${optionsHtml}
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        }
+
+        function updateProgress() {
+            let answeredCount = 0;
+            activeData.forEach((q, index) => {
+                const selected = document.querySelector(`input[name="question_${currentStage}_${index}"]:checked`);
+                if (selected) answeredCount++;
+            });
+            let percentage = (answeredCount / activeData.length) * 100;
+            document.getElementById('progressBar').style.width = percentage + '%';
+        }
+
+        function processSubmissions() {
+            let allAnswered = true;
+            activeData.forEach((q, index) => {
+                const selected = document.querySelector(`input[name="question_${currentStage}_${index}"]:checked`);
+                if (!selected) allAnswered = false;
+            });
+
+            if (!allAnswered) {
+                alert("الرجاء الإجابة على جميع الأسئلة الظاهرة قبل الاعتماد!");
+                return;
+            }
+
+            if (currentStage === 'main') {
+                initialScore = 0;
+                wrongQuestionsList = [];
+
+                activeData.forEach((q, index) => {
+                    const selected = document.querySelector(`input[name="question_${currentStage}_${index}"]:checked`);
+                    const selectedVal = parseInt(selected.value);
+
+                    if (selectedVal === q.correct) {
+                        initialScore += q.weight;
+                        document.getElementById(`label-${currentStage}-${index}-${selectedVal}`).classList.add('correct-ans');
+                    } else {
+                        wrongQuestionsList.push(q);
+                        document.getElementById(`label-${currentStage}-${index}-${selectedVal}`).classList.add('wrong-ans');
+                        document.getElementById(`label-${currentStage}-${index}-${q.correct}`).classList.add('correct-ans');
+                    }
+
+                    const radios = document.querySelectorAll(`input[name="question_${currentStage}_${index}"]`);
+                    radios.forEach(r => r.disabled = true);
+                });
+
+                document.getElementById('submitBtn').style.display = 'none';
+                showFirstReport(initialScore);
+
+            } else {
+                let reviewGainedScore = 0;
+                activeData.forEach((q, index) => {
+                    const selected = document.querySelector(`input[name="question_${currentStage}_${index}"]:checked`);
+                    const selectedVal = parseInt(selected.value);
+
+                    if (selectedVal === q.correct) {
+                        reviewGainedScore += q.weight;
+                        document.getElementById(`label-${currentStage}-${index}-${selectedVal}`).classList.add('correct-ans');
+                    } else {
+                        document.getElementById(`label-${currentStage}-${index}-${selectedVal}`).classList.add('wrong-ans');
+                        document.getElementById(`label-${currentStage}-${index}-${q.correct}`).classList.add('correct-ans');
+                    }
+
+                    const radios = document.querySelectorAll(`input[name="question_${currentStage}_${index}"]`);
+                    radios.forEach(r => r.disabled = true);
+                });
+
+                finalScore = initialScore + reviewGainedScore;
+                if (finalScore > 40) finalScore = 40;
+
+                document.getElementById('submitBtn').style.display = 'none';
+                showFinalReport(finalScore);
+            }
+        }
+
+        function showFirstReport(score) {
+            const resultBox = document.getElementById('result-box');
+            resultBox.style.display = 'block';
+            document.getElementById('first-score-val').innerText = `${score} / 40`;
+
+            const scoreText = document.getElementById('score-text');
+            const statusBadge = document.getElementById('status-badge');
+
+            if (score === 40) {
+                statusBadge.innerText = "علامة كاملة - ممتاز!";
+                scoreText.innerText = `أداء مذهل يا ${studentFullName}! لقد أجبت على كافة الأسئلة بشكل صحيح تماماً.`;
+                triggerCelebration();
+            } else if (score >= 30) {
+                statusBadge.innerText = "نتيجة ممتازة";
+                scoreText.innerText = `أداء رائع جداً يا ${studentFullName}، لديك فهم عميق لمفاهيم قواعد البيانات.`;
+            } else if (score >= 20) {
+                statusBadge.innerText = "نتيجة جيدة";
+                scoreText.innerText = `مستوى جيد يا ${studentFullName}, يمكنك مراجعة الأخطاء وتطوير مهاراتك أكثر.`;
+            } else {
+                statusBadge.innerText = "تحتاج للمزيد من المراجعة";
+                scoreText.innerText = `ننصحك بمراجعة مواضيع قواعد البيانات وإعادة تدارك الأخطاء يا ${studentFullName}.`;
+            }
+
+            if (wrongQuestionsList.length > 0) {
+                document.getElementById('btnRetryWrong').style.display = 'block';
+            }
+
+            resultBox.scrollIntoView({
+                behavior: 'smooth'
+            });
+        }
+
+        function startWrongReview() {
+            currentStage = 'review';
+            activeData = [...wrongQuestionsList];
+            wrongQuestionsList = [];
+
+            document.getElementById('result-box').style.display = 'none';
+            document.getElementById('section-subtitle').innerText = `تدارك الأخطاء (${activeData.length} أسئلة)`;
+            document.getElementById('submitBtn').style.display = 'block';
+            document.getElementById('submitBtn').innerText = 'اعتماد إجابات التدارك';
+
+            renderQuestions();
+            updateProgress();
+        }
+
+        function showFinalReport(score) {
+            const resultBox = document.getElementById('result-box');
+            resultBox.style.display = 'block';
+            document.getElementById('result-box-title').innerText = "تقرير النتائج النهائي";
+            document.getElementById('second-score-card').style.display = 'block';
+            document.getElementById('after-score-val').innerText = `${score} / 40`;
+            document.getElementById('status-badge').innerText = "تم التدارك بنجاح";
+            document.getElementById('score-text').innerText = `ممتاز يا ${studentFullName}! تم إنجاز جولة التدارك بنجاح وعلامتك النهائية أصبحت ${score} من 40.`;
+            if (score === 40) triggerCelebration();
+            resultBox.scrollIntoView({
+                behavior: 'smooth'
+            });
+        }
+
+        function exitQuizSession() {
+            alert("تم حفظ النتيجة بنجاح. شكراً لكِ!");
+            location.reload();
+        }
+    </script>
+</body>
+
+</html>
