@@ -385,7 +385,7 @@
         <div id="welcome-screen">
             <div class="welcome-badge-box">
                 <h1>امتحان مادة قواعد البيانات المتخصص</h1>
-                <h2>شامل (SQL, ERD, Normalization, Relational Algebra, DDL, DML)</h2>
+                <h2>شامل (SQL, NoSQL, Relational Model, Queries)</h2>
             </div>
             <div class="input-group">
                 <label for="studentNameInput">أدخلي اسم الطالبة الثلاثي:</label>
@@ -452,142 +452,142 @@
         const originalQuizData = [{
             id: 1,
             weight: 2,
-            question: "ما هو الغرض الأساسي من استخدام نموذج العلاقات الكيانية (ERD) في تصميم قواعد البيانات؟",
-            options: ["كتابة أكواد جافا سكريبت للواجهات.", "التمثيل المرئي للكيانات والخصائص والعلاقات بينها قبل مرحلة التنفيذ الفعلي.", "تسريع أداء معالج الحاسوب.", "ضغط حجم ملفات قواعد البيانات."],
+            question: "من هو العالم الذي قدم نموذج قواعد البيانات العلائقية (Relational Database Model) في عام 1970؟",
+            options: ["بيل جيتس (Bill Gates)", "إدجار كود (Edgar Codd)", "ستيف جوبز (Steve Jobs)", "ألان تورنج (Alan Turing)"],
             correct: 1,
             isCode: false
         }, {
             id: 2,
             weight: 2,
-            question: "أي من أوامر لغة تعريف البيانات (DDL) التالية يُستخدم لحذف جدول بالكامل مع هيكله وقيوده من قاعدة البيانات؟",
-            options: ["DROP TABLE Employees;", "DELETE FROM Employees;", "REMOVE TABLE Employees;", "CLEAR TABLE Employees;"],
-            correct: 0,
-            isCode: true
+            question: "أي من الأنظمة التالية يُعد مثالاً على قواعد بيانات NoSQL؟",
+            options: ["MySQL", "Oracle", "MongoDB", "PostgreSQL"],
+            correct: 2,
+            isCode: false
         }, {
             id: 3,
             weight: 2,
-            question: "ما هي لغة معالجة البيانات (DML) التي تُستخدم لإدخال سجلات أو صفوف جديدة داخل الجدول؟",
-            options: ["SELECT", "UPDATE", "INSERT INTO", "ALTER TABLE"],
-            correct: 2,
-            isCode: true
+            question: "ماذا يسمى الحقل (أو العمود) الذي يحتوي على نوع معين من البيانات مثل الاسم أو العمر داخل الجدول؟",
+            options: ["السجل (Record)", "الحقل (Field)", "المفتاح الرئيسي (Primary Key)", "قاعدة البيانات (Database)"],
+            correct: 1,
+            isCode: false
         }, {
             id: 4,
             weight: 2,
-            question: "في نموذج العلاقة الكيانية (ERD)، ماذا يمثل الشكل \"المعين\" (Diamond)؟",
-            options: ["الكيان (Entity)", "الخاصية (Attribute)", "العلاقة (Relationship)", "المفتاح الأساسي (Primary Key)"],
+            question: "أي نوع من بيانات SQL التالية يُستخدم لتخزين سلاسل من الحروف بمساحة تخزين ديناميكية ومتغيرة حسب الحرف الفعلي المدخل؟",
+            options: ["CHARACTER", "CHAR", "CHARACTER VARYING (VARCHAR)", "INTEGER"],
             correct: 2,
             isCode: false
         }, {
             id: 5,
             weight: 2,
-            question: "أي من قيود التكامل المرجعي (Integrity Constraints) يُستخدم لضمان عدم تكرار قيمة الحقل وأنها لا تقبل القيمة الفارغة (NULL)؟",
-            options: ["FOREIGN KEY", "PRIMARY KEY", "CHECK", "DEFAULT"],
-            correct: 1,
-            isCode: false
+            question: "ما هي الجملة المستخدمة لتعديل بنية الجدول (مثل إضافة عمود جديد) في لغة SQL؟",
+            options: ["UPDATE TABLE", "MODIFY TABLE", "ALTER TABLE", "CHANGE TABLE"],
+            correct: 2,
+            isCode: true
         }, {
             id: 6,
             weight: 2,
-            question: "في الجبر العلائقي (Relational Algebra)، ما هي العملية التي تُستخدم لاختيار \"صفوف\" (Tuples) معينة تحقق شرطاً محدداً من جدول ما؟",
-            options: ["Selection (σ - Sigma)", "Projection (π - Pi)", "Cartesian Product (×)", "Join (⨈)"],
-            correct: 0,
+            question: "ما هو المحدد (Constraint) الذي يُستخدم لمنع تكرار القيم في عمود معين داخل الجدول؟",
+            options: ["NOT NULL", "UNIQUE", "FOREIGN KEY", "PRIMARY KEY"],
+            correct: 1,
             isCode: false
         }, {
             id: 7,
             weight: 2,
-            question: "ما هي الصيغة الصحيحة في لغة SQL لترتيب النتائج تصاعدياً بناءً على حقل الراتب (Salary)؟",
-            options: ["ORDER BY Salary DESC", "SORT BY Salary ASC", "ORDER BY Salary ASC", "GROUP BY Salary"],
-            correct: 2,
-            isCode: true
+            question: "كم عدد المفاتيح الرئيسية (Primary Key) التي تقبلها لغة SQL للعلاقة أو الجدول الواحد؟",
+            options: ["مفتاح واحد كحد أقصى", "مفتاحان كحد أقصى", "ثلاثة مفاتيح", "عدد غير محدود من المفاتيح الرئيسية"],
+            correct: 0,
+            isCode: false
         }, {
             id: 8,
             weight: 2,
-            question: "ما هو الهدف من عملية التسوية الأولى (First Normal Form - 1NF) في قواعد البيانات؟",
-            options: ["إزالة الاعتماديات الجزئية.", "التخلص من القيم المتعددة (Multivalued Attributes) وجعل كل خلية تحتوي على قيمة ذرية واحدة.", "إزالة الاعتماديات المتعدية.", "ربط الجداول ببعضها عبر المفاتيح الأجنبية."],
+            question: "لأي غرض تُستخدم جملة INSERT في لغة SQL؟",
+            options: ["استرجاع البيانات وتعديلها", "إضافة سجلات جديدة للجدول", "حذف الجداول بالكامل", "إنشاء جدول فارغ جديد"],
             correct: 1,
             isCode: false
         }, {
             id: 9,
             weight: 2,
-            question: "أي من دوال التجميع (Aggregate Functions) في SQL تستخدم لحساب عدد الصفوف في جدول معين؟",
-            options: ["SUM()", "COUNT()", "AVG()", "TOTAL()"],
-            correct: 1,
-            isCode: true
+            question: "ما هي القيمة الافتراضية التي يتم تخزينها تلقائياً في الحقول التي لم يتم تحديد قيمتها عند إدخال سجل جديد (إذا لم تكن ممنوعة بـ NOT NULL)؟",
+            options: ["صفر (0)", "فراغ (Space)", "NULL (القيمة الخالية)", "خطأ (Error)"],
+            correct: 2,
+            isCode: false
         }, {
             id: 10,
             weight: 2,
-            question: "ماذا تعني عملية الـ Projection ($\pi$) في الجبر العلائقي؟",
-            options: ["اختيار أعمدة معينة فقط من الجدول وإهمال الباقي.", "تصفية الصفوف بشرط معين.", "دمج جدولين بناءً على حقل مشترك.", "إيجاد الفرق بين جدولين."],
-            correct: 0,
+            question: "ماذا يحدث عند تنفيذ جملة DELETE من جدول معين دون استخدام جملة WHERE؟",
+            options: ["يتم حذف الجدول نهائياً من قاعدة البيانات", "يتم حذف جميع السجلات الموجودة في الجدول مع إبقاء هيكل وتكوين الجدول", "يحدث خطأ في النظام ولا يتم التنفيذ", "يتم حذف السجل الأول فقط"],
+            correct: 1,
             isCode: false
         }, {
             id: 11,
             weight: 2,
-            question: "أي من أوامر SQL التالية يُستخدم لتعديل هيكل الجدول بإضافة عمود جديد؟",
-            options: ["UPDATE TABLE", "ALTER TABLE ADD", "MODIFY TABLE", "CHANGE TABLE"],
-            correct: 1,
-            isCode: true
+            question: "في الشكل الأساسي للاستفسار (SELECT)، ما هي العبارة الاختيارية التي تُستخدم لتحديد معايير وشروط الاختيار من الجداول؟",
+            options: ["FROM", "SELECT", "WHERE", "ORDER BY"],
+            correct: 2,
+            isCode: false
         }, {
             id: 12,
             weight: 2,
-            question: "متى نصل بقاعدة البيانات إلى مستوى التسوية الثالثة (3NF)؟",
-            options: ["إذا كانت في 2NF وتخلصت من جميع الاعتماديات المتعدية (Transitive Dependencies).", "إذا كانت تحتوي على مفتاح مركب.", "إذا تم حذف جميع القيود.", "إذا كانت الجداول غير مترابطة."],
-            correct: 0,
+            question: "ماذا تفعل الكلمة المفتاحية DISTINCT عند استخدامها مع جملة SELECT؟",
+            options: ["ترتب النتائج تصاعدياً", "تمنع وتلغي تكرار الأسطر المتطابقة في النتيجة", "تحسب مجموع القيم في العمود", "تحدد شروط الربط بين الجداول"],
+            correct: 1,
             isCode: false
         }, {
             id: 13,
             weight: 2,
-            question: "ما هو الأمر المستخدم لتنفيذ استعلام دمج بين جدولين بناءً على تطابق مفتاح أجنبي مع مفتاح أساسي؟",
-            options: ["JOIN", "MERGE", "COMBINE", "UNION ALL"],
-            correct: 0,
-            isCode: true
+            question: "أي عامل مقارنة (Operator) يُستخدم للبحث عن نمط نصي معين باستخدام الرموز \"%\" و \"_\"?",
+            options: ["IN", "BETWEEN", "LIKE", "EXISTS"],
+            correct: 2,
+            isCode: false
         }, {
             id: 14,
             weight: 2,
-            question: "أي من الكلمات المفتاحية في SQL تُستخدم لتجميع الصفوف ذات القيم المتشابهة لتطبيق دوال التجميع عليها؟",
-            options: ["ORDER BY", "HAVING", "GROUP BY", "WHERE"],
+            question: "ما هي الجملة التي تُستخدم لترتيب نتائج الاستفسار إما تصاعدياً أو تنازلياً؟",
+            options: ["SORT BY", "GROUP BY", "ORDER BY", "ARRANGE BY"],
             correct: 2,
-            isCode: true
+            isCode: false
         }, {
             id: 15,
             weight: 2,
-            question: "ما هو المفتاح الأجنبي (Foreign Key)؟",
-            options: ["حقل فريد لا يقبل التكرار أبداً داخل نفس الجدول.", "حقل في جدول يشير إلى المفتاح الأساسي في جدول آخر لربطهما معاً.", "كلمة مرور لحماية قاعدة البيانات.", "رقم تسلسلي تلقائي."],
+            question: "ما هو الشرط الأساسي لتطبيق عمليات المجموعات مثل الاتحاد (UNION)، التقاطع (INTERSECTION)، والفرق (EXCEPT) بين جملتي استفسار؟",
+            options: ["أن يكون اسم الجدولين متشابهاً تماماً", "أن يكون لنتيجة الاستفسارين نفس عدد الأعمدة ولها نفس النوع وبالترتيب نفسه", "ألا يحتوي الاستفسار على شروط WHERE", "أن يتم استخدام نفس عدد السجلات في كلا الجدولين"],
             correct: 1,
             isCode: false
         }, {
             id: 16,
             weight: 2,
-            question: "ما هو الشرط الأساسي للانتقال من التسوية الأولى (1NF) إلى التسوية الثانية (2NF)؟",
-            options: ["أن تكون في 1NF وأن يتم إزالة أي اعتمادية جزئية (Partial Dependency).", "أن يتم حذف كافة الفهارس.", "أن يكون الجدول خالياً تماماً من البيانات.", "أن يتم تحويله إلى شكل رسومي."],
-            correct: 0,
+            question: "ماذا تُسمى جملة الاستفسار التي يتم تضمينها داخل جملة استفسار رئيسية أخرى؟",
+            options: ["الاستفسار الموزع (Distributed Query)", "الاستفسار المتداخل (Nested Query)", "الاستفسار المباشر (Direct Query)", "الاستفسار الخارجي (Outer Query)"],
+            correct: 1,
             isCode: false
         }, {
             id: 17,
             weight: 2,
-            question: "أي من أوامر DML التالية يُستخدم لتحديث بيانات السجلات القائمة؟",
-            options: ["ALTER", "UPDATE", "INSERT", "REFRESH"],
-            correct: 1,
-            isCode: true
+            question: "أي دالة من دوال التجميع (Aggregate Operators) الأساسية تُستخدم لحساب معدل أو متوسط القيم في عمود معين؟",
+            options: ["SUM", "COUNT", "AVG", "MAX"],
+            correct: 2,
+            isCode: false
         }, {
             id: 18,
             weight: 2,
-            question: "في نموذج ERD، ماذا يمثل خط الاتصال الواصل بين الكيان والخاصية؟",
-            options: ["علاقة رأس بأطراف", "ربط الخاصية بالكيان التابع لها", "مفتاح أساسي مركب", "حذف تلقائي"],
-            correct: 1,
+            question: "ما هو الاختصار الذي يقصد به واجهة برمجة التطبيقات القياسية لربط لغة SQL بلغات البرمجة العامة مثل Java؟",
+            options: ["API", "URL", "HTTP", "JSON"],
+            correct: 0,
             isCode: false
         }, {
             id: 19,
             weight: 2,
-            question: "ما هو الفرق الرئيسي بين شرط WHERE وشرط HAVING في جملة الاستعلام؟",
-            options: ["WHERE تُطبق على الصفوف قبل التجميع، بينما HAVING تُطبق على المجموعات بعد التجميع (Group By).", "لا يوجد فرق بينهما نهائياً.", "HAVING تستخدم فقط مع الحذف.", "WHERE تستخدم حصراً مع النصوص."],
-            correct: 0,
-            isCode: true
+            question: "في تثبيت نظام MySQL على نظام Windows، ما هو الخيار الموصى بتحميله من الموقع الرسمي لضمان توفر كل الأدوات اللازمة؟",
+            options: ["Web Installer", "Full Installer", "Lite Version", "Portable Package"],
+            correct: 1,
+            isCode: false
         }, {
             id: 20,
             weight: 2,
-            question: "ما هو المفهوم الذي يعبر عن قدرة نظام قواعد البيانات على ضمان إتمام المعاملات كحزمة واحدة متكاملة أو إلغائها بالكامل (ACID properties)؟",
-            options: ["مبدأ معاملة البيانات (Transactions)", "إدارة الألوان والواجهات", "تشفير الملفات الصوتية", "جدولة المهام السحابية"],
-            correct: 0,
+            question: "ما هي قاعدة البيانات الخفيفة المدمجة تلقائياً في نظام Android ولا تحتاج إلى خادم خارجي لتخزين البيانات محلياً؟",
+            options: ["Oracle", "SQLite", "SQL Server", "MongoDB"],
+            correct: 1,
             isCode: false
         }];
 
@@ -758,77 +758,71 @@
                     radios.forEach(r => r.disabled = true);
                 });
 
-                finalScore = initialScore + reviewGainedScore;
-                if (finalScore > 40) finalScore = 40;
-
                 document.getElementById('submitBtn').style.display = 'none';
-                showFinalReport(finalScore);
+                showFinalReport(reviewGainedScore);
             }
         }
 
         function showFirstReport(score) {
             const resultBox = document.getElementById('result-box');
-            resultBox.style.display = 'block';
             document.getElementById('first-score-val').innerText = `${score} / 40`;
-
-            const scoreText = document.getElementById('score-text');
-            const statusBadge = document.getElementById('status-badge');
-
+            
             if (score === 40) {
-                statusBadge.innerText = "علامة كاملة - ممتاز!";
-                scoreText.innerText = `أداء مذهل يا ${studentFullName}! لقد أجبت على كافة الأسئلة بشكل صحيح تماماً.`;
+                document.getElementById('status-badge').innerText = "امتياز - العلامة الكاملة!";
+                document.getElementById('score-text').innerText = "أحسنتِ! لقد أجبتِ على جميع الأسئلة بشكل صحيح تماماً.";
                 triggerCelebration();
             } else if (score >= 30) {
-                statusBadge.innerText = "نتيجة ممتازة";
-                scoreText.innerText = `أداء رائع جداً يا ${studentFullName}، لديك فهم عميق لمفاهيم قواعد البيانات.`;
-            } else if (score >= 20) {
-                statusBadge.innerText = "نتيجة جيدة";
-                scoreText.innerText = `مستوى جيد يا ${studentFullName}, يمكنك مراجعة الأخطاء وتطوير مهاراتك أكثر.`;
+                document.getElementById('status-badge').innerText = "مستوى جيد جداً";
+                document.getElementById('score-text').innerText = `أداء رائع، لديكِ ${wrongQuestionsList.length} أخطاء بسيطة يمكنك تداركها.`;
             } else {
-                statusBadge.innerText = "تحتاج للمزيد من المراجعة";
-                scoreText.innerText = `ننصحك بمراجعة مواضيع قواعد البيانات وإعادة تدارك الأخطاء يا ${studentFullName}.`;
+                document.getElementById('status-badge').innerText = "يحتاج إلى مراجعة وتدارك";
+                document.getElementById('score-text').innerText = `لقد أخطأتِ في ${wrongQuestionsList.length} أسئلة، ننصحك باستخدام زر تدارك الأخطاء أدناه.`;
             }
 
             if (wrongQuestionsList.length > 0) {
                 document.getElementById('btnRetryWrong').style.display = 'block';
             }
 
-            resultBox.scrollIntoView({
-                behavior: 'smooth'
-            });
+            resultBox.style.display = 'block';
+            resultBox.scrollIntoView({ behavior: 'smooth' });
         }
 
         function startWrongReview() {
-            currentStage = 'review';
+            currentStage = 'retry';
             activeData = [...wrongQuestionsList];
-            wrongQuestionsList = [];
-
             document.getElementById('result-box').style.display = 'none';
-            document.getElementById('section-subtitle').innerText = `تدارك الأخطاء (${activeData.length} أسئلة)`;
             document.getElementById('submitBtn').style.display = 'block';
-            document.getElementById('submitBtn').innerText = 'اعتماد إجابات التدارك';
-
+            document.getElementById('section-title').innerText = "تدارك وإعادة الأسئلة الخاطئة";
+            document.getElementById('section-subtitle').innerText = "ركزي في الإجابة على الأسئلة التي أخطأتِ بها سابقاً لتعويض العلامات";
             renderQuestions();
             updateProgress();
         }
 
-        function showFinalReport(score) {
-            const resultBox = document.getElementById('result-box');
-            resultBox.style.display = 'block';
-            document.getElementById('result-box-title').innerText = "تقرير النتائج النهائي";
+        function showFinalReport(reviewGainedScore) {
+            finalScore = initialScore + reviewGainedScore;
+            if (finalScore > 40) finalScore = 40;
+
             document.getElementById('second-score-card').style.display = 'block';
-            document.getElementById('after-score-val').innerText = `${score} / 40`;
-            document.getElementById('status-badge').innerText = "تم التدارك بنجاح";
-            document.getElementById('score-text').innerText = `ممتاز يا ${studentFullName}! تم إنجاز جولة التدارك بنجاح وعلامتك النهائية أصبحت ${score} من 40.`;
-            if (score === 40) triggerCelebration();
-            resultBox.scrollIntoView({
-                behavior: 'smooth'
-            });
+            document.getElementById('after-score-val').innerText = `${finalScore} / 40`;
+            
+            const resultBox = document.getElementById('result-box');
+            document.getElementById('status-badge').innerText = "تم إتمام التدارك بنجاح";
+            document.getElementById('score-text').innerText = `تم تقليص الأخطاء وإضافة العلامات المكتسبة لترتفع حصيلتك النهائية إلى ${finalScore} من 40.`;
+
+            if (finalScore === 40) {
+                triggerCelebration();
+            }
+
+            document.getElementById('btnRetryWrong').style.display = 'none';
+            resultBox.style.display = 'block';
+            resultBox.scrollIntoView({ behavior: 'smooth' });
         }
 
         function exitQuizSession() {
-            alert("تم حفظ النتيجة بنجاح. شكراً لكِ!");
-            location.reload();
+            if (confirm("هل أنت متأكدة من رغبتك في إنهاء جلسة الاختبار؟")) {
+                alert("تم حفظ النتيجة بنظارة المعلمة. شكراً لحضوكِ!");
+                location.reload();
+            }
         }
     </script>
 </body>
