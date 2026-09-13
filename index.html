@@ -448,6 +448,8 @@
 
     <script>
         let studentFullName = "";
+        let isExamActive = false;
+        let cheatingDetected = false;
 
         const originalQuizData = [{
             id: 1,
@@ -597,6 +599,41 @@
         let finalScore = 0;
         let wrongQuestionsList = [];
 
+        // نظام منع الغش (مراقبة مغادرة التبويب أو التركيز)
+        document.addEventListener('visibilitychange', function() {
+            if (isExamActive && !cheatingDetected && document.hidden) {
+                handleCheatingViolation();
+            }
+        });
+
+        window.addEventListener('blur', function() {
+            if (isExamActive && !cheatingDetected) {
+                handleCheatingViolation();
+            }
+        });
+
+        function handleCheatingViolation() {
+            cheatingDetected = true;
+            isExamActive = false;
+
+            // تصفير النتيجة وعرض صفحة الغش المباشرة
+            document.body.innerHTML = `
+                <div style="background-color: var(--bg-color); color: #ff3366; min-height: 100vh; display: flex; justify-content: center; align-items: center; padding: 20px; text-align: center; direction: rtl; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">
+                    <div style="background: rgba(4, 30, 51, 0.95); border: 2px solid #ff3366; border-radius: 22px; padding: 30px; max-width: 500px; width: 100%; box-shadow: 0 0 40px rgba(255, 51, 102, 0.4);">
+                        <h1 style="font-size: 22px; margin-bottom: 15px; color: #ff3366;">⚠️ تنبيه: تم رصد محاولة غش!</h1>
+                        <p style="color: var(--text-main); font-size: 14px; line-height: 1.6; margin-bottom: 20px;">
+                            لقد قمت بمغادرة صفحة الاختبار أو فتح تبويب آخر، مما يعتبر مخالفة لقواعد الامتحانات المعتمدة. تم تصقير النتيجة واعتبار الاختبار ملغى.
+                        </p>
+                        <div style="background: rgba(255, 51, 102, 0.1); border: 1px solid rgba(255, 51, 102, 0.3); padding: 12px; border-radius: 10px; margin-bottom: 20px; font-size: 13px; color: #bae6fd;">
+                            اسم الطالبة: <strong>${studentFullName || 'غير مسجل'}</strong><br>
+                            النتيجة النهائية: <strong>0 / 40 (مصفرة)</strong>
+                        </div>
+                        <button onclick="location.reload()" style="background: linear-gradient(135deg, #ff3366, #ff6688); color: white; border: none; padding: 12px 20px; border-radius: 10px; font-weight: bold; cursor: pointer; width: 100%; font-size: 14px;">إعادة تحميل الصفحة</button>
+                    </div>
+                </div>
+            `;
+        }
+
         function triggerCelebration() {
             if (typeof confetti === 'function') {
                 var duration = 3 * 1000;
@@ -652,6 +689,10 @@
             document.getElementById('quiz-section').style.display = 'block';
             currentStage = 'main';
             activeData = [...originalQuizData];
+            
+            // تفعيل نظام منع الغش بدءاً من هذه اللحظة
+            isExamActive = true;
+
             renderQuestions();
             updateProgress();
         }
@@ -737,6 +778,9 @@
                     radios.forEach(r => r.disabled = true);
                 });
 
+                // إيقاف تفعيل منع الغش بعد تسليم الاختبار بنجاح
+                isExamActive = false;
+
                 document.getElementById('submitBtn').style.display = 'none';
                 showFirstReport(initialScore);
 
@@ -758,6 +802,7 @@
                     radios.forEach(r => r.disabled = true);
                 });
 
+                isExamActive = false;
                 document.getElementById('submitBtn').style.display = 'none';
                 showFinalReport(reviewGainedScore);
             }
@@ -766,7 +811,7 @@
         function showFirstReport(score) {
             const resultBox = document.getElementById('result-box');
             document.getElementById('first-score-val').innerText = `${score} / 40`;
-            
+
             if (score === 40) {
                 document.getElementById('status-badge').innerText = "امتياز - العلامة الكاملة!";
                 document.getElementById('score-text').innerText = "أحسنتِ! لقد أجبتِ على جميع الأسئلة بشكل صحيح تماماً.";
@@ -784,7 +829,9 @@
             }
 
             resultBox.style.display = 'block';
-            resultBox.scrollIntoView({ behavior: 'smooth' });
+            resultBox.scrollIntoView({
+                behavior: 'smooth'
+            });
         }
 
         function startWrongReview() {
@@ -794,6 +841,10 @@
             document.getElementById('submitBtn').style.display = 'block';
             document.getElementById('section-title').innerText = "تدارك وإعادة الأسئلة الخاطئة";
             document.getElementById('section-subtitle').innerText = "ركزي في الإجابة على الأسئلة التي أخطأتِ بها سابقاً لتعويض العلامات";
+            
+            // إعادة تفعيل نظام منع الغش أثناء جلسة التدارك
+            isExamActive = true;
+
             renderQuestions();
             updateProgress();
         }
@@ -804,7 +855,7 @@
 
             document.getElementById('second-score-card').style.display = 'block';
             document.getElementById('after-score-val').innerText = `${finalScore} / 40`;
-            
+
             const resultBox = document.getElementById('result-box');
             document.getElementById('status-badge').innerText = "تم إتمام التدارك بنجاح";
             document.getElementById('score-text').innerText = `تم تقليص الأخطاء وإضافة العلامات المكتسبة لترتفع حصيلتك النهائية إلى ${finalScore} من 40.`;
@@ -815,12 +866,15 @@
 
             document.getElementById('btnRetryWrong').style.display = 'none';
             resultBox.style.display = 'block';
-            resultBox.scrollIntoView({ behavior: 'smooth' });
+            resultBox.scrollIntoView({
+                behavior: 'smooth'
+            });
         }
 
         function exitQuizSession() {
             if (confirm("هل أنت متأكدة من رغبتك في إنهاء جلسة الاختبار؟")) {
-                alert("تم حفظ النتيجة بنظارة المعلمة. شكراً لحضوكِ!");
+                isExamActive = false;
+                alert("تم حفظ النتيجة بنجاح. شكراً لحضوكِ!");
                 location.reload();
             }
         }
